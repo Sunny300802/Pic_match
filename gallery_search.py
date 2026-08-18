@@ -11,7 +11,7 @@ from flask import Flask, jsonify
 import face_engine as fe
 from match_faces import SINGLE_PERSON_FOLDER, load_reference_people
 
-API_URL = "https://services.heterohcl.com/dfs-icon/api/gallery?summit_id=1"
+API_URL = ""
 GROUP_PHOTO_FOLDER = "group_photos"
 INDEX_FILE = "gallery_index.json"
 CACHE_FILE = "embeddings_cache.json"
