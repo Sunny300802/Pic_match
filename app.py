@@ -29,8 +29,6 @@ gallery_index = {}
 
 
 def ensure_models():
-    """Load the two ONNX models once, lazily. Never crashes the app if
-    they're missing - just reports the problem on the page instead."""
     global model_error
     try:
         fe.ensure_models()
@@ -42,8 +40,6 @@ def ensure_models():
 
 
 def index_photo(fname):
-    """Compute (or reuse cached) face embeddings for one photo already on disk
-    in GROUP_PHOTO_FOLDER. Returns True if at least one face was found."""
     path = os.path.join(GROUP_PHOTO_FOLDER, fname)
     embeds = embedding_cache.get(fname, path)
     if embeds:
@@ -54,11 +50,6 @@ def index_photo(fname):
 
 
 def build_group_cache():
-    """(Re)scan GROUP_PHOTO_FOLDER and cache embeddings per photo.
-
-    Photos whose file hasn't changed since last time are read straight out of
-    the on-disk embedding cache, so restarts are near-instant.
-    """
     global model_error
     group_cache.clear()
     if not os.path.isdir(GROUP_PHOTO_FOLDER):
@@ -84,11 +75,6 @@ def load_gallery_index():
 
 
 def reference_embeddings(files):
-    """Turn uploaded reference photos into one embedding per person.
-
-    Keyed by filename without extension. Uses the largest face in each photo,
-    so a bystander in the background can't take over someone's identity.
-    """
     people, skipped = {}, []
     for f in files:
         name = os.path.splitext(f.filename)[0]
@@ -101,7 +87,6 @@ def reference_embeddings(files):
 
 
 def find_matches(people, require_all):
-    """[(filename, [names]), ...] for every indexed photo containing someone."""
     results = []
     for fname, group_embeds in group_cache.items():
         matched = [name for name, ref in people.items()
